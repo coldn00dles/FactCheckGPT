@@ -1,0 +1,14 @@
+numpy
+pandas
+langchain
+pinecone-client
+openai
+tiktoken
+tqdm
+uuid
+langdetect
+deep_translator
+python-dotenv
+pygame
+gtts
+speech_recognition
