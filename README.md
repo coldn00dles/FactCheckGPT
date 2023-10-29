@@ -4,7 +4,7 @@ An LLM-powered chatbot that allows users to confirm claims and fake news floatin
 
 ## Installation Steps :  
  - clone the repository
- - run ```pip install -r requirements.txt``` on your terminal
- - enter the "FactCheckGPT" folder and run ```python main.py```
+ - enter the "FactCheckGPT" folder and run ```pip install -r requirements.txt``` on your terminal
+ - run ```python main.py```
 
 ### Have a look at ```example-queries.txt``` to get started with some sample claims
