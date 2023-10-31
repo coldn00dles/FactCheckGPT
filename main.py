@@ -6,7 +6,7 @@ import langchain
 from langchain.vectorstores import Pinecone
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
-from langchain.chains import ConversationalRetrievalChain
+from langchain.chains import ConversationalRetrievalChain,RetrievalQA
 from langchain.memory import ConversationBufferMemory
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import regex as re 
@@ -41,15 +41,16 @@ embed = OpenAIEmbeddings(
 
 def get_vector_store(idx,txtfield):
     return Pinecone(idx,embed.embed_query,txtfield)
-
+chat_history = []
 
 def get_chain(vstore):
     memory = ConversationBufferMemory(memory_key="chat_history")
-    prompt = """Start all your sentences with sure I can assist you with that.You are supposed to answer the user about statements and claims that they ask and give appropiate replies about their validity. Speak humanely and make sure to be polite and hospitable.
-    If unaware of an answer or if it cannot be found, reply normally and donot mention the phrases like As an AI in the part of your answer.
-    Question : {question}
-    Answer : """
-    chattemplate = PromptTemplate.from_template(prompt)
+    # prompt = """Start all your sentences with sure I can assist you with that.You are supposed to answer the user about statements and claims that they ask and give appropiate replies about their validity. Speak humanely and make sure to be polite and hospitable.
+    # If unaware of an answer or if it cannot be found, reply normally and donot mention the phrases like As an AI in the part of your answer.
+    # Question : {question}
+    # Answer : """
+    # chattemplate = PromptTemplate(template=prompt,input_variables=["question"])
+    # chain_type_kwargs = {"prompt":chattemplate}
     llm = ChatOpenAI(
     streaming=True,
     openai_api_key=openai_api_key,
@@ -57,10 +58,11 @@ def get_chain(vstore):
     temperature=0.0,
     callbacks=[StreamingStdOutCallbackHandler()]
     )
-    qa = ConversationalRetrievalChain.from_llm(
+    qa = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=vstore.as_retriever(),
-        condense_question_prompt=chattemplate,
+        # chain_type_kwargs=chain_type_kwargs,
+        chain_type="stuff",
         memory=memory
     )
     return qa 
@@ -111,7 +113,7 @@ def sourcereturn(query,vstore):
 #     pygame.mixer.music.play()
 
 def chatbot(query,vecstore,qachain):
-    claiminfo = qachain({"question" : query})["answer"]
+    claiminfo = qachain.run(query)
     urls = sourcereturn(claiminfo,vecstore)
     stmt = "For more information click the links provided underneath"
     query_language = detect(query)

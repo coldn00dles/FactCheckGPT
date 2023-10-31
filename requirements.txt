@@ -11,4 +11,4 @@ deep_translator
 python-dotenv
 pygame
 gtts
-speech_recognition
+SpeechRecognition
