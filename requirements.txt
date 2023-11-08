@@ -6,9 +6,5 @@ openai
 tiktoken
 tqdm
 uuid
-langdetect
-deep_translator
 python-dotenv
-pygame
-gtts
-SpeechRecognition
+newspaper3k
