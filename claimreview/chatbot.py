@@ -23,4 +23,4 @@ class Chatbot:
                 unique_domains.add(domain)
 
         sources = "\n".join(filtered_sourcelist)
-        return sources
+        return "\n" + sources

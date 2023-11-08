@@ -33,6 +33,6 @@ chatbot = Chatbot(convchain)
 # Sample Chatbot logic 
 while True:
     user_question = str(input("\nHi what would you like to ask today?\n "))
-    chatbot.run(user_question)
+    print(chatbot.run(user_question))
 
 
