@@ -4,7 +4,7 @@ import requests
 
 url = "http://127.0.0.1:5000/chatbot"
 message = "Is the claim about sunil gavaskar criticizing BCCI over handling cricket world cup true?"
-data = {"content": message}
+data = {"question": message}
 
 headers = {"Content-type": "application/json"}
 
