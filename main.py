@@ -46,8 +46,8 @@ qa_chain_initializer = chainhandler(openai_api_key, embedder, memory)
 app = FastAPI()
 
 @app.get("/api")   #return api status
-def root():  
-    return {"message" : "OK"}
+async def hello_word():  
+    return "Yo! Hello world, The backend is running !!!"
 
 async def send_message(query: str) -> AsyncIterable[str]:      #returns streamed output from chatbot
     callbackhandler = AsyncIteratorCallbackHandler()
