@@ -10,3 +10,4 @@ python-dotenv
 newspaper3k
 pydantic
 fastapi
+asyncio
