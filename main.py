@@ -76,7 +76,7 @@ async def send_message(query: str) -> AsyncIterable[str]:      #returns streamed
     await task
     callbackhandler.done.set()
 
-@app.post("/chatbot/")
+@app.post("/api/chatbot/")
 async def chatstream(question: Message):
     answer = send_message(question.content)
     return StreamingResponse(
