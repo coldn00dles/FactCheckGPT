@@ -8,3 +8,5 @@ tqdm
 uuid
 python-dotenv
 newspaper3k
+pydantic
+fastapi
