@@ -2,9 +2,9 @@ import json
 
 import requests
 
-url = "http://127.0.0.1:5000/chatbot"
+url = "https://factcheck.essentiasoftserv.com/api/chatbot/"
 message = "Is the claim about sunil gavaskar criticizing BCCI over handling cricket world cup true?"
-data = {"question": message}
+data = {"content": message}
 
 headers = {"Content-type": "application/json"}
 
