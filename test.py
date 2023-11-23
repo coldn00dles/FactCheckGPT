@@ -2,12 +2,13 @@ import json
 
 import requests
 
-url = "https://factcheck.essentiasoftserv.com/api/chatbot/"
-message = "Is the claim about sunil gavaskar criticizing BCCI over handling cricket world cup true?"
+url = "http://127.0.0.1:5000/api/chatbot/"
+message = "Hi, whats your purpose?"
 data = {"content": message}
 
 headers = {"Content-type": "application/json"}
 
 with requests.post(url, data=json.dumps(data), headers=headers, stream=True) as r:
-    for chunk in r.iter_content(1024):
-        print(chunk)
+    for chunk in r.iter_content(None, decode_unicode=True):
+        if chunk:
+            print(chunk, end='', flush=True)
