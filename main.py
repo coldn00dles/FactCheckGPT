@@ -11,10 +11,14 @@ from langchain.chat_models import ChatOpenAI
 from typing import AsyncIterable
 from pydantic import BaseModel
 import asyncio
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
-class Message(BaseModel):  #pydantic object for message input
+class Message(BaseModel):  # pydantic object for message input
     content: str
+
 
 # Initialize keys
 keysInstance = keysInstance()
@@ -26,7 +30,7 @@ pinecone_api_key = keysInstance.get_pinecone_api_key()
 Embeddings = Embeddings(openai_api_key)
 embedder = Embeddings.get_embedding_object()
 
-#Initialize index and vectorstore
+# Initialize index and vectorstore
 vstoreInstance = vstoreInstance(pinecone_api_key)
 idx = vstoreInstance.get_index()
 vector_store = vstoreInstance.get_vector_store(idx, embedder, "text")
@@ -35,22 +39,24 @@ vector_store = vstoreInstance.get_vector_store(idx, embedder, "text")
 # memoryhandler = memoryhandler()
 # memory = memoryhandler.get_memory()
 
-#import prompts
+# import prompts
 
 # prompt = Prompt()
 # condensed_question_template = prompt.get_prompt()
 
 # qa_chain_initializer = chainhandler(openai_api_key, embedder, memory)
 
-claimc = Chatbot(vector_store=vector_store,openai_api_key=openai_api_key)
+claimc = Chatbot(vector_store=vector_store, openai_api_key=openai_api_key)
 
 claimbot = claimc.get_lcel()
 
 app = FastAPI()
 
-@app.get("/api")   #return api status
-async def hello_word():  
+
+@app.get("/api")  # return api status
+async def hello_word():
     return "Yo! Hello world, The backend is running !!!"
+
 
 # async def send_message(query: str) -> AsyncIterable[str]:      #returns streamed output from chatbot
 #     callbackhandler = AsyncIteratorCallbackHandler()
@@ -62,7 +68,7 @@ async def hello_word():
 #         memory=memory,
 #         return_source_documents=True
 #     )
-    
+
 #     task = asyncio.create_task(
 #         qachain.acall({
 #             "question" : query
@@ -70,12 +76,12 @@ async def hello_word():
 #     )
 #     try:
 #         async for token in callbackhandler.aiter():
-#             yield token 
+#             yield token
 #     except Exception as e:
 #         print(f"Exception caught : {e}")
 #     finally:
 #         callbackhandler.done.set()
-        
+
 #     await task
 #     callbackhandler.done.set()
 
@@ -86,15 +92,50 @@ async def hello_word():
 #         answer,media_type="text/event-stream"
 #     )
 
-async def send_message(query : str) -> AsyncIterable[str]:
-    async for s in claimbot.astream({"question" : query}):
+
+async def send_message(query: str) -> AsyncIterable[str]:
+    async for s in claimbot.astream({"question": query}):
         yield s
-    
-    
-    
+
+
 @app.post("/api/chatbot/")
 async def chatstream(question: Message):
     answer = send_message(question.content)
-    return StreamingResponse(
-        answer,media_type="text/event-stream"
-    )
+    return StreamingResponse(answer, media_type="text/event-stream")
+
+
+@app.post("/api/feedback")
+async def forward_feedback_to_mail(form_data: dict):
+    smtp_server = "smtpout.secureserver.net"
+    port = 465  # For starttls
+    sender_email = keysInstance.get_email_api_key()
+    password = keysInstance.get_password_api_key()
+    # Create a secure SSL context
+    msg = MIMEMultipart()
+    msg.set_unixfrom("author")
+    msg["From"] = sender_email
+    msg["To"] = "me.piyushaggarwal@gmail.com"
+    msg["Subject"] = "Feedback from Factcheck"
+    form_data = form_data["form_data"]
+    data_from = form_data["from_email"]
+    data_messege = form_data["messege"]
+    data_subject = form_data["subject"]
+    data_name = form_data["name"]
+
+    message = f"Feedback From Factcheck\n From Email:{data_from},\n name:{data_name},\n subject:{data_subject},\n messege:{data_messege}"
+    msg.attach(MIMEText(message))
+    # Try to log in to server and send email
+    try:
+        server = smtplib.SMTP_SSL(smtp_server, port)
+        server.ehlo()  # Can be omitted
+        # server.starttls(context=context)  # Secure the connection
+        # server.ehlo()  # Can be omitted
+        server.login(sender_email, password)
+        server.sendmail(sender_email, "me.piyushaggarwal@gmail.com", msg.as_string())
+        # TODO: Send email here
+    except Exception as e:
+        # Print any error messages to stdout
+        return e
+    finally:
+        server.quit()
+        return "mail sent", 200
