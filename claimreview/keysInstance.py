@@ -9,7 +9,7 @@ class keysInstance:
         self.openai_api_key = os.getenv("OPENAIKEY")
         self.pinecone_api_key = os.getenv("PCKEY")
         self.email = os.getenv("EMAIL")
-        self.kcl = os.getenv("PASSWORD")
+        self.password = os.getenv("PASSWORD")
         openai.api_key = self.openai_api_key
         os.environ["OPENAI_API_KEY"] = self.openai_api_key
 
