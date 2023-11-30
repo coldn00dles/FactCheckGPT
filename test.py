@@ -3,7 +3,7 @@ import json
 import requests
 
 url = "http://127.0.0.1:5000/api/chatbot/"
-message = "Hi, whats your purpose?"
+message = "Is there any information about obama meeting sadhguru in washington?"
 data = {"content": message}
 
 headers = {"Content-type": "application/json"}
