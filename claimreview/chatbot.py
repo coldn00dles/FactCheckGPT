@@ -1,7 +1,7 @@
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema.runnable import RunnableMap
 from langchain.schema.output_parser import StrOutputParser
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from claimreview.prompts import Prompt
 import regex as re
 class Chatbot:

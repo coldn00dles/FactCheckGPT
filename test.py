@@ -2,8 +2,8 @@ import json
 
 import requests
 
-url = "http://127.0.0.1:5000/api/chatbot/"
-message = "Did uddhav thackeray say that aurangzeb is his brother"
+url = "http://127.0.0.1:5050/api/chatbot/"
+message = str(input("What would you like to ask today?"))
 data = {"content": message}
 
 headers = {"Content-type": "application/json"}

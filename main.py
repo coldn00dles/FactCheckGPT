@@ -104,38 +104,38 @@ async def chatstream(question: Message):
     return StreamingResponse(answer, media_type="text/event-stream")
 
 
-@app.post("/api/feedback")
-async def forward_feedback_to_mail(form_data: dict):
-    smtp_server = "smtpout.secureserver.net"
-    port = 465  # For starttls
-    sender_email = keysInstance.get_email_api_key()
-    password = keysInstance.get_password_api_key()
-    # Create a secure SSL context
-    msg = MIMEMultipart()
-    msg.set_unixfrom("author")
-    msg["From"] = sender_email
-    msg["To"] = "me.piyushaggarwal@gmail.com"
-    msg["Subject"] = "Feedback from Factcheck"
-    form_data = form_data["form_data"]
-    data_from = form_data["from_email"]
-    data_messege = form_data["messege"]
-    data_subject = form_data["subject"]
-    data_name = form_data["name"]
+# @app.post("/api/feedback")
+# async def forward_feedback_to_mail(form_data: dict):
+#     smtp_server = "smtpout.secureserver.net"
+#     port = 465  # For starttls
+#     sender_email = keysInstance.get_email_api_key()
+#     password = keysInstance.get_password_api_key()
+#     # Create a secure SSL context
+#     msg = MIMEMultipart()
+#     msg.set_unixfrom("author")
+#     msg["From"] = sender_email
+#     msg["To"] = "me.piyushaggarwal@gmail.com"
+#     msg["Subject"] = "Feedback from Factcheck"
+#     form_data = form_data["form_data"]
+#     data_from = form_data["from_email"]
+#     data_messege = form_data["messege"]
+#     data_subject = form_data["subject"]
+#     data_name = form_data["name"]
 
-    message = f"Feedback From Factcheck\n From Email:{data_from},\n name:{data_name},\n subject:{data_subject},\n messege:{data_messege}"
-    msg.attach(MIMEText(message))
-    # Try to log in to server and send email
-    try:
-        server = smtplib.SMTP_SSL(smtp_server, port)
-        server.ehlo()  # Can be omitted
-        # server.starttls(context=context)  # Secure the connection
-        # server.ehlo()  # Can be omitted
-        server.login(sender_email, password)
-        server.sendmail(sender_email, "me.piyushaggarwal@gmail.com", msg.as_string())
-        # TODO: Send email here
-    except Exception as e:
-        # Print any error messages to stdout
-        return e
-    finally:
-        server.quit()
-        return "mail sent", 200
+#     message = f"Feedback From Factcheck\n From Email:{data_from},\n name:{data_name},\n subject:{data_subject},\n messege:{data_messege}"
+#     msg.attach(MIMEText(message))
+#     # Try to log in to server and send email
+#     try:
+#         server = smtplib.SMTP_SSL(smtp_server, port)
+#         server.ehlo()  # Can be omitted
+#         # server.starttls(context=context)  # Secure the connection
+#         # server.ehlo()  # Can be omitted
+#         server.login(sender_email, password)
+#         server.sendmail(sender_email, "me.piyushaggarwal@gmail.com", msg.as_string())
+#         # TODO: Send email here
+#     except Exception as e:
+#         # Print any error messages to stdout
+#         return e
+#     finally:
+#         server.quit()
+#         return "mail sent", 200

@@ -1,5 +1,5 @@
-import pinecone
-from langchain.vectorstores import Pinecone
+from pinecone import Pinecone as pc
+from langchain_pinecone import PineconeVectorStore
 import os
 from dotenv import load_dotenv
 
@@ -8,10 +8,10 @@ class vstoreInstance:
         self.pinecone_api_key = pinecone_api_key
         load_dotenv()  
         self.index_name = os.getenv("INDEXNAME")  
-        pinecone.init(api_key=pinecone_api_key, environment="gcp-starter")
+        self.pc = pc(api_key=pinecone_api_key, environment="gcp-starter")
 
     def get_index(self):
-        return pinecone.Index(self.index_name)
+        return self.pc.Index(self.index_name)
 
     def get_vector_store(self,index, embedder, text_field):
-        return Pinecone(index, embedder.embed_query, text_field)
+        return PineconeVectorStore(index, embedder, text_field)
