@@ -9,4 +9,12 @@ This FOSS project was a part of my apprenticeship at IBM research(mentored by Dr
  - run `cd FactCheckGPT` folder and run ```uvicorn main:app --port 5000```
  - run the ```test.py``` file for interaction
 
+## Run demo
+
+
+
+https://github.com/user-attachments/assets/0ce2604f-197c-4da9-8e2a-5177b047b726
+
+
+
 ### Have a look at `example-queries.txt` to get started with some sample claims
