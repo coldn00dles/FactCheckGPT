@@ -1,6 +1,6 @@
 # FactCheckGPT
 <br>
-An LLM-powered chatbot that allows users to confirm claims and fake news floating around various parts of the internet. BYOK(Bring your own Key) for local testing.
+An LLM-powered chatbot that allows users to confirm claims and fake news floating around various parts of the internet. <br> BYOK(Bring your own Key) for local testing. <br>
 This FOSS project was a part of my apprenticeship at IBM research(mentored by Dr. L V Subramaniam), made in collaboration with India Today (POC : Piyush Agarwal) 
 
 ## Installation Steps :  
