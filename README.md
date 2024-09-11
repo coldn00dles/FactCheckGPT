@@ -1,6 +1,7 @@
 # ClaimGPT
 <br>
 An LLM-powered chatbot that allows users to confirm claims and fake news floating around various parts of the internet. BYOK(Bring your own Key) for local testing.
+This FOSS project was a part of my apprenticeship at IBM research(mentored by Dr. L V Subramaniam), made in collaboration with India Today (POC : Piyush Agarwal) 
 
 ## Installation Steps :  
  - clone the `fastapi` branch of the repository
